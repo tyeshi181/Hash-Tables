@@ -14,8 +14,8 @@ class Pair:
 # Fill this in.  All storage values should be initialized to None
 # '''
 class BasicHashTable:
-    def __init__(self, capacity):
-        self.capacity = 8
+    def __init__(self, capacity=8):
+        self.capacity = capacity
         self.storage = [None] * capacity
 
 
@@ -27,7 +27,8 @@ def hash(string, max):
     hash = 5381
     for x in string:
         hash = ((hash << max) + hash) + ord(x)
-    return hash & 0xFFFFFFFF
+        result = hash & 0xFFFFFFFF
+        return result % max
 
 
 # '''
@@ -36,14 +37,13 @@ def hash(string, max):
 # If you are overwriting a value with a different key, print a warning.
 # '''
 def hash_table_insert(hash_table, key, value):
-    new_key = hash(key, 16)
+    index = hash(key, hash_table.capacity)
     new_pair = Pair(key, value)
-    index = new_key % hash_table.capacity
-    if hash_table.storage[index] != None:
-        if key == hash_table.storage[index].key:
+    if hash_table.storage[index] is not None:
+        if hash_table.storage[index].key != key:
             print(f"thou would be over written")
-        else:
-            hash_table.storage[index].value = value
+            hash_table.storage[index].key = key
+        hash_table.storage[index].value = value
     else:
         hash_table.storage[index] = new_pair
 
@@ -57,17 +57,21 @@ def hash_table_remove(hash_table, key):
 
     # '''
     # Fill this in.
-    hashed_key = hash(key)
-    index = hashed_key % hash_table.capacity
-    if hash_table.storage[index] != None:
-        hash_table.storage[index] = None
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is None or hash_table.storage[index].key != key:
+        print(f"Warning: key: {key} does not exist")
     # Should return None if the key is not found.
     # '''
     else:
-        print(f"key not found")
+        hash_table.storage[index] = Pair(None, None)
 
 
 def hash_table_retrieve(hash_table, key):
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is not None and hash_table.storage[index].key == key:
+        return hash_table.storage[index].value
+    else:
+        return None
 
 
 def Testing():
