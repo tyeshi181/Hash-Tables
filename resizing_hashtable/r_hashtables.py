@@ -17,14 +17,18 @@ class LinkedPair:
 # '''
 class HashTable:
     def __init__(self, capacity):
-        pass
+        self.capacity = capacity
+        self.storage = [None] * capacity
 
 
 # '''
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
+    for x in string:
+        hash = ((hash << max) + hash) + ord(x)
+        result = hash & 0xFFFFFFFF
+        return result % max
 
 
 # '''
@@ -33,16 +37,25 @@ def hash(string, max):
 # Hint: Used the LL to handle collisions
 # '''
 def hash_table_insert(hash_table, key, value):
-    pass
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is not None:
+        if hash_table.storage[index].key != key:
 
 
-# '''
-# Fill this in.
-
-# If you try to remove a value that isn't there, print a warning.
-# '''
 def hash_table_remove(hash_table, key):
-    pass
+    # '''
+            # Fill this in.
+
+            # If you try to remove a value that isn't there, print a warning.
+            # '''
+
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is None or hash_table.storage[index].key != key:
+        print(f"Warning: key: {key} does not exist")
+    # Should return None if the key is not found.
+    # '''
+    else:
+        hash_table.storage[index] = Pair(None, None)
 
 
 # '''
@@ -51,14 +64,24 @@ def hash_table_remove(hash_table, key):
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is not None and hash_table.storage.key == key:
+        return hash_table.storage[index].value
+    else:
+        return None
 
 
 # '''
 # Fill this in
 # '''
 def hash_table_resize(hash_table):
-    pass
+    percent = hash_table.capacity / self.capacity
+    if percent > 0.75:
+        new_capacity = self.capacity * 2
+    for i in range(len(self.storage)):
+        if self.storage[i] is not None:
+            self.storage[i] = new_capacity[i]
+    return new_capacity
 
 
 def Testing():
